@@ -1,0 +1,51 @@
+{% extends 'news_list\base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
+    {{ post.body|linebreaks }}
+
+
+    {% with likes.count as total_likes %}
+    <h2>
+      Количество лайков: {{ total_likes }}
+    </h2>
+    {% endwith %}
+    <form action="." method="post">
+        {{ like_form.as_p }} {% csrf_token %}
+        <p><input type="submit" value="Мне нравится"></p>
+    </form>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    {% with comments.count as total_comments %}
+    <h2>
+      Количество комментариев: {{ total_comments }}
+    </h2>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>По данной статье, комментарии отсутствуют.</p>
+    {% endfor %}
+
+    {% if new_comment %}
+        <h2>Комментарий успешно добавлен.</h2>
+    {% else %}
+        <h2>Оставить комментарий</h2>
+        <form action="." method="post">
+            {{ comment_form.as_p }} {% csrf_token %}
+            <p><input type="submit" value="Публиковать"></p>
+        </form>
+    {% endif %}
+
+{% endblock content %}
