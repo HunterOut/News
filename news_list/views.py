@@ -4,11 +4,6 @@ from django.views.generic import ListView
 from .forms import CommentForm, LikeForm
 
 
-#def post_list(request):
-#    posts = Post.objects.all()
-#    return render(request, 'news_list/list.html', {'posts': posts})
-
-
 class PostListView(ListView):
     queryset = Post.objects.all()
     context_object_name = 'posts'
@@ -20,7 +15,7 @@ def post_detail(request, post):
 
     comments = post.comments.filter(active=True)
     new_comment = None
-    #########
+
     likes = post.likes.filter(active=True)
     new_like = None
 
@@ -33,7 +28,6 @@ def post_detail(request, post):
     else:
         comment_form = CommentForm()
 
-    ###############
     if request.method == 'POST':
         like_form = LikeForm(data=request.POST)
         if like_form.is_valid():
