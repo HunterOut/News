@@ -1,17 +1,21 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+from .models import Post
 from django.views.generic import ListView
 from .forms import CommentForm, LikeForm
 
 
 class PostListView(ListView):
-    queryset = Post.objects.all()
+    queryset = Post.published.all()
     context_object_name = 'posts'
     template_name = 'news_list/list.html'
 
 
-def post_detail(request, post):
-    post = get_object_or_404(Post, slug=post)
+def post_detail(request, year, month, day, post):
+    post = get_object_or_404(Post, slug=post,
+                                   status='published',
+                                   publish__year=year,
+                                   publish__month=month,
+                                   publish__day=day)
 
     comments = post.comments.filter(active=True)
     new_comment = None
