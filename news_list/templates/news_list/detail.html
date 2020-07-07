@@ -4,6 +4,11 @@
     <h1>{{ post.title }}</h1>
     <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
     {{ post.body|linebreaks }}
+    <p>
+        <a href="{% url "news_list:post_share" post.id %}">
+            Поделиться
+        </a>
+    </p>
 
     {% with likes.count as total_likes %}
     <h2>
