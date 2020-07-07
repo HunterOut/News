@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "news_list\base.html" %}
+
+{% block title %}Поделиться новостью{% endblock %}
+
+{% block content %}
+  {% if sent %}
+    <h1>Письмо успешно отправлено</h1>
+    <p>
+      "{{ post.title }}" выслано на электронную почту {{ form.cleaned_data.to }}.
+    </p>
+  {% else %}
+    <h1>Поделиться новостью: "{{ post.title }}"</h1>
+    <form action="." method="post">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Отправить">
+    </form>
+  {% endif %}
+{% endblock %}
